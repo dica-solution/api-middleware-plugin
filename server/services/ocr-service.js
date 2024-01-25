@@ -1,7 +1,13 @@
 "use strict";
 
 const _sendFormData = (formData, ctx) => {
-  return fetch(`${process.env.OCR_URL}/api/v1/analyze`, {
+  let ocrURL = `${process.env.OCR_URL}/api/v1/analyze`;
+
+  if (process.env.OCR_QUERY) {
+    ocrURL += process.env.OCR_QUERY;
+  }
+
+  return fetch(ocrURL, {
     method: "POST",
     body: formData,
   })
