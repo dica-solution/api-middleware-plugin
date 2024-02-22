@@ -25,7 +25,8 @@ const _sendFormData = (formData, ctx) => {
       mathText = mathText
         .replaceAll("<", "\\lt ")
         .replace(">", "\\gt ")
-        .replace(/\\\((.*?)\\\)/gs, '<span class="math-tex">\\($1\\)</span>');
+        .replace(/\\\((.*?)\\\)/gs, '<span class="math-tex">\\($1\\)</span>')
+        .replace(/\\\[(.*?)\\\]/gs, '<span class="math-tex">\\[$1\\]</span>');
 
       return {data: mathText};
     })
