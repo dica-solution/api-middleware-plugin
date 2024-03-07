@@ -23,4 +23,9 @@ module.exports = [
       policies: [],
     },
   },
+  {
+    method: "GET",
+    path: "/build-link/:id",
+    handler: "buildLinkController.buildLinkById",
+  },
 ];
