@@ -28,7 +28,7 @@ const _sendFormData = (formData, ctx) => {
         .replace(/\\\((.*?)\\\)/gs, '<span class="math-tex">\\($1\\)</span>')
         .replace(/\\\[(.*?)\\\]/gs, '<span class="math-tex">\\[$1\\]</span>');
 
-      return {data: mathText};
+      return {data: mathText, response: data};
     })
     .catch((error) => {
       ctx.send({detail: error}, 500);

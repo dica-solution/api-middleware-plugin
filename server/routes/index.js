@@ -13,6 +13,7 @@ module.exports = [
     handler: "healthCheckController.healthCheck",
     config: {
       policies: [],
+      auth: false,
     },
   },
   {
@@ -21,6 +22,7 @@ module.exports = [
     handler: "healthCheckController.healthCheckOCR",
     config: {
       policies: [],
+      auth: false,
     },
   },
   {
