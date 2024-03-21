@@ -30,12 +30,14 @@ const _sendFormData = (strapi, ctx, imageOCRUrl, formData, isSave) => {
 
       const dataToSave = {url: imageOCRUrl, response: data};
       if (isSave) {
-        //save to db for data analysis
-        strapi.db.query("api::ocr-log.ocr-log").create({
-          data: {
-            ...dataToSave,
-          },
-        });
+        if (mathText.trim()) {
+          //save to db for data analysis
+          strapi.db.query("api::ocr-log.ocr-log").create({
+            data: {
+              ...dataToSave,
+            },
+          });
+        }
       }
 
       return {data: mathText, ...dataToSave};
