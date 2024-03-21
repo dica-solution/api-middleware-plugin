@@ -1,6 +1,6 @@
 "use strict";
 
-const _sendFormData = (formData, ctx) => {
+const _sendFormData = (strapi, ctx, imageOCRUrl, formData, isSave) => {
   let ocrURL = `${process.env.OCR_URL}/api/v1/analyze`;
 
   if (process.env.OCR_QUERY) {
@@ -28,7 +28,17 @@ const _sendFormData = (formData, ctx) => {
         .replace(/\\\((.*?)\\\)/gs, '<span class="math-tex">\\($1\\)</span>')
         .replace(/\\\[(.*?)\\\]/gs, '<span class="math-tex">\\[$1\\]</span>');
 
-      return {data: mathText, response: data};
+      const dataToSave = {url: imageOCRUrl, response: data};
+      if (isSave) {
+        //save to db for data analysis
+        strapi.db.query("api::ocr-log.ocr-log").create({
+          data: {
+            ...dataToSave,
+          },
+        });
+      }
+
+      return {data: mathText, ...dataToSave};
     })
     .catch((error) => {
       ctx.send({detail: error}, 500);
@@ -48,13 +58,13 @@ const _downloadImage = async (url) => {
 };
 
 module.exports = ({strapi}) => ({
-  async handleOCR(url, ctx) {
+  async handleOCR(url, ctx, isSave = true) {
     return _downloadImage(url)
       .then((blob) => {
         const formData = new FormData();
         formData.append("file", blob, "image.jpg");
 
-        return _sendFormData(formData, ctx);
+        return _sendFormData(strapi, ctx, url, formData, isSave);
       })
       .catch((error) => {
         ctx.send({detail: error.message}, 500);

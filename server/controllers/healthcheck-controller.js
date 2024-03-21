@@ -11,6 +11,6 @@
     return strapi
       .plugin("api-middleware-plugin")
       .service("ocrService")
-      .handleOCR(url, ctx);
+      .handleOCR(url, ctx, false);
   },
 });
